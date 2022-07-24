@@ -17,6 +17,9 @@ class _FrontPageState extends State<FrontPage> {
   List<TeaData> data = [];
   List<CustomerData> cData = [];
   int tap_index = 0;
+  String cSize;
+  String cIce;
+  String sweet;
 
   @override
   void initState() {
@@ -43,7 +46,7 @@ class _FrontPageState extends State<FrontPage> {
                 '${teaDataList.kindTitle}',
               ),
               children: [
-                buildListView(teaDataList, context),
+                buildTeaTitle(teaDataList, context),
               ],
             ),
           );
@@ -53,7 +56,7 @@ class _FrontPageState extends State<FrontPage> {
   }
 
   //teaTitle列表
-  Widget buildListView(TeaData teaDataList, BuildContext context) {
+  Widget buildTeaTitle(TeaData teaDataList, BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: teaDataList.items.length,
@@ -104,8 +107,9 @@ class _FrontPageState extends State<FrontPage> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    print(index);
+                    // print(index);
                     tap_index = index;
+                    cSize = sizeList;
                   });
                 },
                 child: Container(
@@ -151,6 +155,7 @@ class _FrontPageState extends State<FrontPage> {
                     setState(() {
                       // print("Tapped index: $index");
                       tap_index = index;
+                      cIce = iceList;
                     });
                   },
                   child: Container(
@@ -192,6 +197,7 @@ class _FrontPageState extends State<FrontPage> {
                   setState(() {
                     // print("Tapped index: $index");
                     tap_index = index;
+                    sweet = sewwtList;
                   });
                 },
                 child: Container(
@@ -298,7 +304,19 @@ class _FrontPageState extends State<FrontPage> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pop(false);
+                              print(itemList.itemTitle);
+                              print(cSize);
+                              print(cIce);
+                              print(sweet);
+                              Navigator.of(context).pushNamed(
+                                DetailPage().routeName,
+                                arguments: {
+                                  'title': itemList.itemTitle,
+                                  'size': cSize,
+                                  'ice': cIce,
+                                  'sweet': sweet,
+                                },
+                              );
                             }),
                       ),
                     ],
@@ -309,37 +327,37 @@ class _FrontPageState extends State<FrontPage> {
       ),
     );
   }
+
   //選擇加料的程式
   ExpansionTile buildFeed() {
     return ExpansionTile(
-              title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
-              children: [
-                GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 2.5),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: cData[2].feed.length,
-                    itemBuilder: (_, index) {
-                      final feedList = cData[2].feed[index];
-                      return Container(
-                        width: 50,
-                        height: 25,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10)),
-                            color: Colors.orange[300]),
-                        child: Text(feedList,
-                            style: TextStyle(fontSize: 12),
-                            textAlign: TextAlign.center),
-                      );
-                    }),
-              ],
-            );
+      title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
+      children: [
+        GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 2.5),
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: cData[2].feed.length,
+            itemBuilder: (_, index) {
+              final feedList = cData[2].feed[index];
+              return Container(
+                width: 50,
+                height: 25,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.orange[300]),
+                child: Text(feedList,
+                    style: TextStyle(fontSize: 12),
+                    textAlign: TextAlign.center),
+              );
+            }),
+      ],
+    );
   }
 
   //解析tea.json資料
