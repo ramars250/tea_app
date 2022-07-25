@@ -17,6 +17,9 @@ class _FrontPageState extends State<FrontPage> {
   List<TeaData> data = [];
   List<CustomerData> cData = [];
   int tap_index = 0;
+  String cSize;
+  String cIce;
+  String sweet;
 
   @override
   void initState() {
@@ -43,7 +46,7 @@ class _FrontPageState extends State<FrontPage> {
                 '${teaDataList.kindTitle}',
               ),
               children: [
-                buildListView(teaDataList, context),
+                buildTeaTitle(teaDataList, context),
               ],
             ),
           );
@@ -53,7 +56,7 @@ class _FrontPageState extends State<FrontPage> {
   }
 
   //teaTitle列表
-  Widget buildListView(TeaData teaDataList, BuildContext context) {
+  Widget buildTeaTitle(TeaData teaDataList, BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
         itemCount: teaDataList.items.length,
@@ -104,8 +107,9 @@ class _FrontPageState extends State<FrontPage> {
               return GestureDetector(
                 onTap: () {
                   setState(() {
-                    print(index);
+                    // print(index);
                     tap_index = index;
+                    cSize = sizeList;
                   });
                 },
                 child: Container(
@@ -151,6 +155,7 @@ class _FrontPageState extends State<FrontPage> {
                     setState(() {
                       // print("Tapped index: $index");
                       tap_index = index;
+                      cIce = iceList;
                     });
                   },
                   child: Container(
@@ -192,6 +197,7 @@ class _FrontPageState extends State<FrontPage> {
                   setState(() {
                     // print("Tapped index: $index");
                     tap_index = index;
+                    sweet = sewwtList;
                   });
                 },
                 child: Container(
@@ -283,7 +289,7 @@ class _FrontPageState extends State<FrontPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(child: Text('總金額${itemList.coldPrice}元')),
+                          Container(child: Text('總金額${itemList.hotPrice+itemList.coldPrice}元')),
                           Container(child: Text('數量條還沒做'))
                         ],
                       ),
@@ -298,7 +304,13 @@ class _FrontPageState extends State<FrontPage> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pop(false);
+                              Navigator.of(context).pushNamed(DetailPage().routeName,
+                              arguments: {
+                                'title': itemList.itemTitle,
+                                'size': cSize,
+                                'ice': cIce,
+                                'sweet': sweet,
+                              });
                             }),
                       ),
                     ],

@@ -1,3 +1,5 @@
+import 'package:tea_app/page/detail_page.dart';
+
 import 'page/front_page.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,11 @@ class TeaApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FrontPage(),
+      // home: FrontPage(),
+      routes: {
+        '/': (ctx) => FrontPage(),
+        DetailPage().routeName: (ctx) => DetailPage(),
+      },
     );
   }
 }
