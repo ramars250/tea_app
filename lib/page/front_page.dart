@@ -18,7 +18,6 @@ class DetailItems {
   final String cupSize;
   final String iceCube;
   final String sweet;
-
   // final String feed;
   DetailItems(this.orderName, this.title, this.cupSize, this.iceCube, this.sweet);
 }
