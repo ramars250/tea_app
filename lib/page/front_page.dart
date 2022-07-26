@@ -12,14 +12,29 @@ class FrontPage extends StatefulWidget {
   State<FrontPage> createState() => _FrontPageState();
 }
 
+class DetailItems {
+  final String orderName;
+  final String title;
+  final String cupSize;
+  final String iceCube;
+  final String sweet;
+
+  // final String feed;
+  DetailItems(this.orderName, this.title, this.cupSize, this.iceCube, this.sweet);
+}
+
 class _FrontPageState extends State<FrontPage> {
   //創一個名字為data屬於TeaData的列表
   List<TeaData> data = [];
   List<CustomerData> cData = [];
+  //文本控制器
+  final textController = TextEditingController();
   int tap_index = 0;
+  String cName;
+  String cTitle;
   String cSize;
   String cIce;
-  String sweet;
+  String cSweet;
 
   @override
   void initState() {
@@ -31,28 +46,57 @@ class _FrontPageState extends State<FrontPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('TEA&TOP'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: data.map((TeaData teaDataList) {
-          return Card(
-            color: Colors.lightBlue[100],
-            child: ExpansionTile(
-              expandedCrossAxisAlignment: CrossAxisAlignment.end,
-              maintainState: true,
-              title: Text(
-                '${teaDataList.kindTitle}',
+        appBar: AppBar(
+          title: Text('TEA&TOP'),
+          centerTitle: true,
+        ),
+        body: ListView(
+          children: data.map((TeaData teaDataList) {
+            return Card(
+              color: Colors.lightBlue[100],
+              child: ExpansionTile(
+                expandedCrossAxisAlignment: CrossAxisAlignment.end,
+                maintainState: true,
+                title: Text(
+                  '${teaDataList.kindTitle}',
+                ),
+                children: [
+                  buildTeaTitle(teaDataList, context),
+                ],
               ),
-              children: [
-                buildTeaTitle(teaDataList, context),
-              ],
+            );
+          }).toList(),
+        ),
+        bottomNavigationBar: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          color: Colors.lightBlue,
+          child: InkWell(
+            onTap: () {
+              //將DeTailItem的資料推送到DetailPage頁面
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(
+                    detailitems: DetailItems(cName, cTitle, cSize, cIce, cSweet),
+                  ),
+                ),
+              );
+            },
+            child: Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.shopping_cart,
+                    color: Colors.black,
+                  ),
+                  Text('去結帳'),
+                ],
+              ),
             ),
-          );
-        }).toList(),
-      ),
-    );
+          ),
+        ));
   }
 
   //teaTitle列表
@@ -109,6 +153,8 @@ class _FrontPageState extends State<FrontPage> {
                   setState(() {
                     // print(index);
                     tap_index = index;
+                    cName = textController.text;
+                    cTitle = itemList.itemTitle;
                     cSize = sizeList;
                   });
                 },
@@ -197,7 +243,7 @@ class _FrontPageState extends State<FrontPage> {
                   setState(() {
                     // print("Tapped index: $index");
                     tap_index = index;
-                    sweet = sewwtList;
+                    cSweet = sewwtList;
                   });
                 },
                 child: Container(
@@ -256,6 +302,7 @@ class _FrontPageState extends State<FrontPage> {
                   child: Text('訂購人姓名(非必填)')),
               Container(
                 child: TextField(
+                  controller: textController,
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.center,
                   autofocus: false,
@@ -289,7 +336,7 @@ class _FrontPageState extends State<FrontPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(child: Text('總金額${itemList.hotPrice+itemList.coldPrice}元')),
+                          Container(child: Text('總金額${itemList.coldPrice}元')),
                           Container(child: Text('數量條還沒做'))
                         ],
                       ),
@@ -304,13 +351,19 @@ class _FrontPageState extends State<FrontPage> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pushNamed(DetailPage().routeName,
-                              arguments: {
-                                'title': itemList.itemTitle,
-                                'size': cSize,
-                                'ice': cIce,
-                                'sweet': sweet,
-                              });
+                              //將訂購頁的資料返回主頁
+                              Navigator.of(context)
+                                  .pop(DetailItems(cName, cTitle, cSize, cIce, cSweet));
+                              print(DetailItems(cName, cTitle, cSize, cIce, cSweet)
+                                  .title);
+                              // Navigator.of(context).pushNamed(
+                              //     DetailPage().routeName,
+                              //     arguments: {
+                              //       'title': itemList.itemTitle,
+                              //       'size': cSize,
+                              //       'ice': cIce,
+                              //       'sweet': sweet,
+                              //     });
                             }),
                       ),
                     ],
@@ -321,37 +374,37 @@ class _FrontPageState extends State<FrontPage> {
       ),
     );
   }
+
   //選擇加料的程式
   ExpansionTile buildFeed() {
     return ExpansionTile(
-              title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
-              children: [
-                GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 2.5),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: cData[2].feed.length,
-                    itemBuilder: (_, index) {
-                      final feedList = cData[2].feed[index];
-                      return Container(
-                        width: 50,
-                        height: 25,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10)),
-                            color: Colors.orange[300]),
-                        child: Text(feedList,
-                            style: TextStyle(fontSize: 12),
-                            textAlign: TextAlign.center),
-                      );
-                    }),
-              ],
-            );
+      title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
+      children: [
+        GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 2.5),
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: cData[2].feed.length,
+            itemBuilder: (_, index) {
+              final feedList = cData[2].feed[index];
+              return Container(
+                width: 50,
+                height: 25,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.orange[300]),
+                child: Text(feedList,
+                    style: TextStyle(fontSize: 12),
+                    textAlign: TextAlign.center),
+              );
+            }),
+      ],
+    );
   }
 
   //解析tea.json資料

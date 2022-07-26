@@ -1,5 +1,4 @@
 import 'package:tea_app/page/detail_page.dart';
-
 import 'page/front_page.dart';
 import 'package:flutter/material.dart';
 
