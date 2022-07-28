@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tea_app/model/customer_list.dart';
+import 'package:tea_app/model/detail_model.dart';
+import 'package:tea_app/model/tea_list.dart';
 import 'package:tea_app/screen//shopping_cart_screen.dart';
-import '../model/detail_model.dart';
-import '../model/tea_list.dart';
+
 
 class FrontScreen extends StatefulWidget {
   @override

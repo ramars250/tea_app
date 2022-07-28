@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../model/detail_model.dart';
+import 'package:tea_app/model/detail_model.dart';
 // import 'package:tea_app/page/front_screen.dart';
 
 
