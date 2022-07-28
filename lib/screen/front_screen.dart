@@ -4,34 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tea_app/model/customer_list.dart';
-import 'package:tea_app/page/detail_page.dart';
+import 'package:tea_app/screen//shopping_cart_screen.dart';
+import '../model/detail_model.dart';
 import '../model/tea_list.dart';
 
-class FrontPage extends StatefulWidget {
+class FrontScreen extends StatefulWidget {
   @override
-  State<FrontPage> createState() => _FrontPageState();
+  State<FrontScreen> createState() => _FrontScreenState();
 }
 
-//建立要推送的DetailItem模型
-class DetailItems {
-  final String orderName;
-  final String title;
-  final String cupSize;
-  final String iceCube;
-  final String sweet;
-
-  // final String feed;
-  DetailItems(
-      this.orderName, this.title, this.cupSize, this.iceCube, this.sweet);
-}
-//建立包含DetailItem模型的列表
-class DetailList {
-  List<DetailItems> detailList;
-
-  DetailList(this.detailList);
-}
-
-class _FrontPageState extends State<FrontPage> {
+class _FrontScreenState extends State<FrontScreen> {
   //創一個名字為data屬於TeaData的列表
   List<TeaData> data = [];
   List<CustomerData> cData = [];
@@ -88,7 +70,7 @@ class _FrontPageState extends State<FrontPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailPage(
+                  builder: (context) => ShoppingCartScreen(
                     detailList: DetailList(detailList),
                   ),
                 ),

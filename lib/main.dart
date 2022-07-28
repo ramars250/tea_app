@@ -1,6 +1,6 @@
-import 'package:tea_app/page/detail_page.dart';
-import 'page/front_page.dart';
 import 'package:flutter/material.dart';
+import 'package:tea_app/screen/shopping_cart_screen.dart';
+import 'screen/front_screen.dart';
 
 void main() => runApp(TeaApp());
 
@@ -15,8 +15,8 @@ class TeaApp extends StatelessWidget {
       ),
       // home: FrontPage(),
       routes: {
-        '/': (ctx) => FrontPage(),
-        DetailPage().routeName: (ctx) => DetailPage(),
+        '/': (ctx) => FrontScreen(),
+        ShoppingCartScreen().routeName: (ctx) => ShoppingCartScreen(),
       },
     );
   }
