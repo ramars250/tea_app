@@ -12,20 +12,31 @@ class FrontPage extends StatefulWidget {
   State<FrontPage> createState() => _FrontPageState();
 }
 
+//建立要推送的DetailItem模型
 class DetailItems {
   final String orderName;
   final String title;
   final String cupSize;
   final String iceCube;
   final String sweet;
+
   // final String feed;
-  DetailItems(this.orderName, this.title, this.cupSize, this.iceCube, this.sweet);
+  DetailItems(
+      this.orderName, this.title, this.cupSize, this.iceCube, this.sweet);
+}
+//建立包含DetailItem模型的列表
+class DetailList {
+  List<DetailItems> detailList;
+
+  DetailList(this.detailList);
 }
 
 class _FrontPageState extends State<FrontPage> {
   //創一個名字為data屬於TeaData的列表
   List<TeaData> data = [];
   List<CustomerData> cData = [];
+  List<DetailItems> detailList = [];
+
   //文本控制器
   final textController = TextEditingController();
   int tap_index = 0;
@@ -40,6 +51,7 @@ class _FrontPageState extends State<FrontPage> {
     super.initState();
     loadingTeaJsonData();
     loadingCustomeJsonrData();
+    // getDetailList();
   }
 
   @override
@@ -72,15 +84,24 @@ class _FrontPageState extends State<FrontPage> {
           color: Colors.lightBlue,
           child: InkWell(
             onTap: () {
-              //將DeTailItem的資料推送到DetailPage頁面
+              //將DeTailItem的資料以列表方式推送到DetailPage頁面
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailPage(
-                    detailitems: DetailItems(cName, cTitle, cSize, cIce, cSweet),
+                    detailList: DetailList(detailList),
                   ),
                 ),
               );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => DetailPage(
+              //       detailitems:
+              //           DetailItems(cName, cTitle, cSize, cIce, cSweet),
+              //     ),
+              //   ),
+              // );
             },
             child: Padding(
               padding: EdgeInsets.only(top: 8),
@@ -350,11 +371,16 @@ class _FrontPageState extends State<FrontPage> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () {
+                              getDetailList();
+                              // print(detailList.length);
                               //將訂購頁的資料返回主頁
-                              Navigator.of(context)
-                                  .pop(DetailItems(cName, cTitle, cSize, cIce, cSweet));
-                              print(DetailItems(cName, cTitle, cSize, cIce, cSweet)
-                                  .title);
+                              Navigator.pop(
+                                  context,
+                                  DetailItems(
+                                      cName, cTitle, cSize, cIce, cSweet));
+                              // print(DetailItems(
+                              //         cName, cTitle, cSize, cIce, cSweet)
+                              //     .title);
                               // Navigator.of(context).pushNamed(
                               //     DetailPage().routeName,
                               //     arguments: {
@@ -432,5 +458,12 @@ class _FrontPageState extends State<FrontPage> {
       this.cData = customerData.cData;
     });
     return customerData;
+  }
+
+  //將Dialog返回的資料做成陣列
+  getDetailList() async {
+    final result = DetailItems(cName, cTitle, cSize, cIce, cSweet);
+    detailList.add(result);
+    return detailList;
   }
 }

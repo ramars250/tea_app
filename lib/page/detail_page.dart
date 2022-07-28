@@ -3,12 +3,13 @@ import 'package:tea_app/page/front_page.dart';
 
 class DetailPage extends StatelessWidget {
   final String routeName = 'detail-page';
-  final DetailItems detailitems;
-  DetailPage({Key key, @required this.detailitems}) : super(key: key);
+  final DetailList detailList;
+  DetailPage({Key key, @required this.detailList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(detailitems.title);
+    // print(detailList.detailList[1].title);
+    // print(detailList.detailList.length);
     return Scaffold(
       appBar: AppBar(
         title: Text('購物車'),
@@ -16,19 +17,19 @@ class DetailPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            child: Text(detailitems.orderName),
+            child: Text('0'),
           ),
           Container(
-            child: Text(detailitems.title),
+            child: Text('1'),
           ),
           Container(
-            child: Text(detailitems.cupSize),
+            child: Text('2'),
           ),
           Container(
-            child: Text(detailitems.iceCube),
+            child: Text('3'),
           ),
           Container(
-            child: Text(detailitems.sweet),
+            child: Text('4'),
           ),
         ],
       ),
