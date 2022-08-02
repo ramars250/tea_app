@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tea_app/model/detail_model.dart';
 // import 'package:tea_app/page/front_screen.dart';
 
-
 class ShoppingCartScreen extends StatelessWidget {
   final String routeName = 'detail-page';
   final DetailList detailList;
@@ -23,7 +22,7 @@ class ShoppingCartScreen extends StatelessWidget {
         itemBuilder: (_, index) {
           final allList = detailList.detailList[index];
           return Container(
-            height: MediaQuery.of(context).size.height *0.18,
+            height: MediaQuery.of(context).size.height * 0.18,
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.centerLeft,
             child: Card(
@@ -38,15 +37,24 @@ class ShoppingCartScreen extends StatelessWidget {
                   ),
                   Text(
                     allList.title,
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 36),
                   ),
                   Row(
                     children: [
-                      Text(allList.cupSize),
-                      Spacer(),
-                      Text(allList.iceCube),
-                      Spacer(),
-                      Text(allList.sweet),
+                      Text(
+                        allList.cupSize,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        allList.iceCube,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        allList.sweet,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ],
                   )
                 ],
