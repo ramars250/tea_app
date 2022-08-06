@@ -5,10 +5,11 @@ class DetailItems {
   final String cupSize;
   final String iceCube;
   final String sweet;
+  final String feed;
 
   // final String feed;
   DetailItems(
-      this.orderName, this.title, this.cupSize, this.iceCube, this.sweet);
+      this.orderName, this.title, this.cupSize, this.iceCube, this.sweet, this.feed);
 }
 //建立包含DetailItem模型的列表
 class DetailList {

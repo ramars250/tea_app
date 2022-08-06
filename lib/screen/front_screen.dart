@@ -8,7 +8,6 @@ import 'package:tea_app/model/detail_model.dart';
 import 'package:tea_app/model/tea_list.dart';
 import 'package:tea_app/screen//shopping_cart_screen.dart';
 
-
 class FrontScreen extends StatefulWidget {
   @override
   State<FrontScreen> createState() => _FrontScreenState();
@@ -28,6 +27,7 @@ class _FrontScreenState extends State<FrontScreen> {
   String cSize;
   String cIce;
   String cSweet;
+  String cFeed;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _FrontScreenState extends State<FrontScreen> {
         ),
         bottomNavigationBar: Container(
           width: MediaQuery.of(context).size.width,
-          height: 60,
+          height: 56,
           color: Colors.lightBlue,
           child: InkWell(
             onTap: () {
@@ -76,15 +76,6 @@ class _FrontScreenState extends State<FrontScreen> {
                   ),
                 ),
               );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => DetailPage(
-              //       detailitems:
-              //           DetailItems(cName, cTitle, cSize, cIce, cSweet),
-              //     ),
-              //   ),
-              // );
             },
             child: Padding(
               padding: EdgeInsets.only(top: 8),
@@ -139,13 +130,14 @@ class _FrontScreenState extends State<FrontScreen> {
     return StatefulBuilder(builder: (context, setState) {
       return Container(
         alignment: Alignment.centerLeft,
-        height: 60,
+        // height: 60,
         width: MediaQuery.of(context).size.width,
         child: GridView.builder(
+            shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, crossAxisSpacing: 20, childAspectRatio: 2.5),
             //不可滑動
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             itemCount: itemList.bPrice != null ? itemList.size.length : 1,
             itemBuilder: (_, index) {
               final size = itemList.size;
@@ -162,8 +154,6 @@ class _FrontScreenState extends State<FrontScreen> {
                   });
                 },
                 child: Container(
-                    width: 50,
-                    height: 25,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -183,15 +173,16 @@ class _FrontScreenState extends State<FrontScreen> {
       builder: (context, setState) {
         return Container(
           alignment: Alignment.centerLeft,
-          height: 140,
+          // height: 140,
           width: MediaQuery.of(context).size.width,
           child: GridView.builder(
+              shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   childAspectRatio: 2.5),
-              physics: NeverScrollableScrollPhysics(),
+              // physics: NeverScrollableScrollPhysics(),
               itemCount: itemList.hotPrice != null
                   ? cData[0].iceCubes.length
                   : cData[0].iceCubes.length - 2,
@@ -228,14 +219,15 @@ class _FrontScreenState extends State<FrontScreen> {
     return StatefulBuilder(builder: (context, setState) {
       return Container(
         alignment: Alignment.centerLeft,
-        height: 120,
+        // height: 120,
         child: GridView.builder(
+            shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 childAspectRatio: 2.5),
-            physics: NeverScrollableScrollPhysics(),
+            // physics: NeverScrollableScrollPhysics(),
             itemCount: cData[1].sewwtness.length,
             itemBuilder: (_, index) {
               final sewwt = cData[1];
@@ -250,8 +242,6 @@ class _FrontScreenState extends State<FrontScreen> {
                   });
                 },
                 child: Container(
-                  width: 50,
-                  height: 25,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -282,9 +272,10 @@ class _FrontScreenState extends State<FrontScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: 35,
-                    child: Text(itemList.itemTitle,
-                        style: TextStyle(fontSize: 25)),
+                    child: Expanded(
+                      child: Text(itemList.itemTitle,
+                          style: TextStyle(fontSize: 25)),
+                    ),
                   ),
                   Container(
                       decoration: BoxDecoration(
@@ -298,11 +289,9 @@ class _FrontScreenState extends State<FrontScreen> {
                       )),
                 ],
               ),
-              SizedBox(height: 10),
+              // SizedBox(height: MediaQuery.of(context).size.height * 0.0125),
               Container(
-                  alignment: Alignment.centerLeft,
-                  height: 25,
-                  child: Text('訂購人姓名(非必填)')),
+                  alignment: Alignment.centerLeft, child: Text('訂購人姓名(非必填)')),
               Container(
                 child: TextField(
                   controller: textController,
@@ -327,21 +316,22 @@ class _FrontScreenState extends State<FrontScreen> {
               Text('糖度', style: TextStyle(fontSize: 16)),
               buildSewwt(),
               buildFeed(),
-              SizedBox(height: 5),
+              Padding(padding: EdgeInsets.all(2)),
               Divider(height: 1.5, color: Colors.grey),
               Container(
-                  height: 80,
                   padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(child: Text('總金額${itemList.coldPrice}元')),
-                          Container(child: Text('數量條還沒做'))
-                        ],
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(child: Text('總金額${itemList.coldPrice}元')),
+                            Container(child: Text('數量條還沒做'))
+                          ],
+                        ),
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -359,19 +349,8 @@ class _FrontScreenState extends State<FrontScreen> {
                               //將訂購頁的資料返回主頁
                               Navigator.pop(
                                   context,
-                                  DetailItems(
-                                      cName, cTitle, cSize, cIce, cSweet));
-                              // print(DetailItems(
-                              //         cName, cTitle, cSize, cIce, cSweet)
-                              //     .title);
-                              // Navigator.of(context).pushNamed(
-                              //     DetailPage().routeName,
-                              //     arguments: {
-                              //       'title': itemList.itemTitle,
-                              //       'size': cSize,
-                              //       'ice': cIce,
-                              //       'sweet': sweet,
-                              //     });
+                                  DetailItems(cName, cTitle, cSize, cIce,
+                                      cSweet, cFeed));
                             }),
                       ),
                     ],
@@ -384,35 +363,46 @@ class _FrontScreenState extends State<FrontScreen> {
   }
 
   //選擇加料的程式
-  ExpansionTile buildFeed() {
-    return ExpansionTile(
-      title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
-      children: [
-        GridView.builder(
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 2.5),
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: cData[2].feed.length,
-            itemBuilder: (_, index) {
-              final feedList = cData[2].feed[index];
-              return Container(
-                width: 50,
-                height: 25,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    color: Colors.orange[300]),
-                child: Text(feedList,
-                    style: TextStyle(fontSize: 12),
-                    textAlign: TextAlign.center),
-              );
-            }),
-      ],
-    );
+  Widget buildFeed() {
+    return StatefulBuilder(builder: (context, setState) {
+      return ExpansionTile(
+        title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
+        children: [
+          GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 2.5),
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: cData[2].feed.length,
+              itemBuilder: (_, index) {
+                final feed = cData[2];
+                final feedList = feed.feed[index];
+                bool tapped = index == tap_index;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      // print("Tapped index: $index");
+                      tap_index = index;
+                      cFeed = feedList;
+                    });
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: tapped ? Colors.orange[300] : Colors.grey[300]),
+                    child: Text(feedList,
+                        style: TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center),
+                  ),
+                );
+              }),
+        ],
+      );
+    });
   }
 
   //解析tea.json資料
@@ -445,8 +435,9 @@ class _FrontScreenState extends State<FrontScreen> {
 
   //將Dialog返回的資料做成陣列
   getDetailList() async {
-    final result = DetailItems(cName, cTitle, cSize, cIce, cSweet);
+    final result = DetailItems(cName, cTitle, cSize, cIce, cSweet, cFeed);
     detailList.add(result);
     return detailList;
   }
 }
+//需要重新檢視選中狀態，因為如果都不點選任何內容按下點購會因為null而報錯

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tea_app/model/detail_model.dart';
-// import 'package:tea_app/page/front_screen.dart';
 
 class ShoppingCartScreen extends StatelessWidget {
   final String routeName = 'detail-page';
@@ -21,13 +20,11 @@ class ShoppingCartScreen extends StatelessWidget {
         itemCount: detailList.detailList.length,
         itemBuilder: (_, index) {
           final allList = detailList.detailList[index];
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.18,
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.centerLeft,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+          return Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -53,6 +50,11 @@ class ShoppingCartScreen extends StatelessWidget {
                       SizedBox(width: 5),
                       Text(
                         allList.sweet,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        allList.feed,
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
