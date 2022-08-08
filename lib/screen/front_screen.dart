@@ -19,9 +19,15 @@ class _FrontScreenState extends State<FrontScreen> {
   List<CustomerData> cData = [];
   List<DetailItems> detailList = [];
 
+  //建立Feed索引列表
+  List<int> selectFeed = [];
+
+  //建立選中Feed名稱
+  String _selectFeedText;
+
   //文本控制器
   final textController = TextEditingController();
-  int tap_index = 0;
+  int tap_index;
   String cName;
   String cTitle;
   String cSize;
@@ -127,6 +133,7 @@ class _FrontScreenState extends State<FrontScreen> {
 
   //杯型大小的程式
   Widget buildCupSize(BuildContext context, Item itemList) {
+    int tap_index;
     return StatefulBuilder(builder: (context, setState) {
       return Container(
         alignment: Alignment.centerLeft,
@@ -169,6 +176,7 @@ class _FrontScreenState extends State<FrontScreen> {
 
   //選擇溫度程式
   Widget buildIce(BuildContext context, Item itemList) {
+    int tap_index;
     return StatefulBuilder(
       builder: (context, setState) {
         return Container(
@@ -216,6 +224,7 @@ class _FrontScreenState extends State<FrontScreen> {
 
   //選擇甜度的程式
   Widget buildSewwt() {
+    int tap_index;
     return StatefulBuilder(builder: (context, setState) {
       return Container(
         alignment: Alignment.centerLeft,
@@ -364,6 +373,8 @@ class _FrontScreenState extends State<FrontScreen> {
 
   //選擇加料的程式
   Widget buildFeed() {
+    selectFeed = [];
+    int tap_index;
     return StatefulBuilder(builder: (context, setState) {
       return ExpansionTile(
         title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
@@ -384,16 +395,25 @@ class _FrontScreenState extends State<FrontScreen> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      // print("Tapped index: $index");
-                      tap_index = index;
-                      cFeed = feedList;
+                      selectFeed.contains(index)
+                          ? selectFeed.remove(index)
+                          : selectFeed.add(index);
+                      // print(selectFeed);
+                      selectFeed.length > 2
+                          ? selectFeed.length = 0 : selectFeed.length;
+                      // tap_index = index;
+                      getSelectedFeed();
+                      cFeed = _selectFeedText;
+                      // print(_selectFeedText);
                     });
                   },
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: tapped ? Colors.orange[300] : Colors.grey[300]),
+                        color: selectFeed.contains(index)
+                            ? Colors.orange[300]
+                            : Colors.grey[300]),
                     child: Text(feedList,
                         style: TextStyle(fontSize: 12),
                         textAlign: TextAlign.center),
@@ -439,5 +459,18 @@ class _FrontScreenState extends State<FrontScreen> {
     detailList.add(result);
     return detailList;
   }
+
+  //取得加料內容的文字
+  getSelectedFeed() {
+    String selectFeedText = '';
+    selectFeed.forEach((element) {
+      if (selectFeedText != '') selectFeedText += '';
+      selectFeedText += (cData[2].feed[element]);
+      _selectFeedText = selectFeedText;
+      return _selectFeedText;
+    });
+  }
+
+  selectFeeds() {}
 }
 //需要重新檢視選中狀態，因為如果都不點選任何內容按下點購會因為null而報錯

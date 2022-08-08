@@ -54,7 +54,7 @@ class ShoppingCartScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 5),
                       Text(
-                        allList.feed,
+                        allList.feed != null ? allList.feed : '',
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
