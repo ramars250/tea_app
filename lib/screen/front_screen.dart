@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tea_app/model/customer_list.dart';
+import 'package:tea_app/model/customer_model.dart';
 import 'package:tea_app/model/detail_model.dart';
-import 'package:tea_app/model/tea_list.dart';
+import 'package:tea_app/model/tea_model.dart';
 import 'package:tea_app/screen//shopping_cart_screen.dart';
 
 class FrontScreen extends StatefulWidget {
@@ -129,6 +129,114 @@ class _FrontScreenState extends State<FrontScreen> {
             ),
           );
         });
+  }
+
+  //客製化內容的程式
+  Widget buildDetail(Item itemList, BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Colors.white),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Expanded(
+                      child: Text(itemList.itemTitle,
+                          style: TextStyle(fontSize: 25)),
+                    ),
+                  ),
+                  Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(1000),
+                          color: Colors.redAccent[100]),
+                      child: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                      )),
+                ],
+              ),
+              // SizedBox(height: MediaQuery.of(context).size.height * 0.0125),
+              Container(
+                  alignment: Alignment.centerLeft, child: Text('訂購人姓名(非必填)')),
+              Container(
+                child: TextField(
+                  controller: textController,
+                  textAlign: TextAlign.start,
+                  textAlignVertical: TextAlignVertical.center,
+                  autofocus: false,
+                  decoration: InputDecoration(
+                    //isCollapsed設為true，用來關閉預設輸入框
+                      isCollapsed: true,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          borderSide:
+                          BorderSide(color: Colors.black, width: 2.0)),
+                      hintText: '非商品備註，僅提供填寫訂購人資訊'),
+                ),
+              ),
+              SizedBox(height: 10),
+              Text('杯型', style: TextStyle(fontSize: 16)),
+              buildCupSize(context, itemList),
+              Text('溫度', style: TextStyle(fontSize: 16)),
+              buildIce(context, itemList),
+              Text('糖度', style: TextStyle(fontSize: 16)),
+              buildSewwt(),
+              buildFeed(),
+              Padding(padding: EdgeInsets.all(2)),
+              Divider(height: 1.5, color: Colors.grey),
+              Container(
+                  padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(child: Text('總金額${itemList.coldPrice}元')),
+                            Container(child: Text('數量條還沒做'))
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: Colors.lightBlue[300],
+                        ),
+                        child: TextButton(
+                            child: Text(
+                              '訂購',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onPressed: () {
+                              getDetailList();
+                              // print(detailList.length);
+                              //將訂購頁的資料返回主頁
+                              Navigator.pop(
+                                  context,
+                                  DetailItems(cName, cTitle, cSize, cIce,
+                                      cSweet, cFeed));
+                            }),
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   //杯型大小的程式
@@ -263,114 +371,6 @@ class _FrontScreenState extends State<FrontScreen> {
     });
   }
 
-  //客製化內容的程式
-  Widget buildDetail(Item itemList, BuildContext context) {
-    return Dialog(
-      child: Container(
-        padding: EdgeInsets.only(left: 10, right: 10),
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            color: Colors.white),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Expanded(
-                      child: Text(itemList.itemTitle,
-                          style: TextStyle(fontSize: 25)),
-                    ),
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1000),
-                          color: Colors.redAccent[100]),
-                      child: IconButton(
-                        icon: Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
-                      )),
-                ],
-              ),
-              // SizedBox(height: MediaQuery.of(context).size.height * 0.0125),
-              Container(
-                  alignment: Alignment.centerLeft, child: Text('訂購人姓名(非必填)')),
-              Container(
-                child: TextField(
-                  controller: textController,
-                  textAlign: TextAlign.start,
-                  textAlignVertical: TextAlignVertical.center,
-                  autofocus: false,
-                  decoration: InputDecoration(
-                      //isCollapsed設為true，用來關閉預設輸入框
-                      isCollapsed: true,
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 2.0)),
-                      hintText: '非商品備註，僅提供填寫訂購人資訊'),
-                ),
-              ),
-              SizedBox(height: 10),
-              Text('杯型', style: TextStyle(fontSize: 16)),
-              buildCupSize(context, itemList),
-              Text('溫度', style: TextStyle(fontSize: 16)),
-              buildIce(context, itemList),
-              Text('糖度', style: TextStyle(fontSize: 16)),
-              buildSewwt(),
-              buildFeed(),
-              Padding(padding: EdgeInsets.all(2)),
-              Divider(height: 1.5, color: Colors.grey),
-              Container(
-                  padding: EdgeInsets.only(left: 0, right: 0, bottom: 0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(child: Text('總金額${itemList.coldPrice}元')),
-                            Container(child: Text('數量條還沒做'))
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Colors.lightBlue[300],
-                        ),
-                        child: TextButton(
-                            child: Text(
-                              '訂購',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onPressed: () {
-                              getDetailList();
-                              // print(detailList.length);
-                              //將訂購頁的資料返回主頁
-                              Navigator.pop(
-                                  context,
-                                  DetailItems(cName, cTitle, cSize, cIce,
-                                      cSweet, cFeed));
-                            }),
-                      ),
-                    ],
-                  )),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   //選擇加料的程式
   Widget buildFeed() {
     selectFeed = [];
@@ -395,6 +395,7 @@ class _FrontScreenState extends State<FrontScreen> {
                 return GestureDetector(
                   onTap: () {
                     setState(() {
+                      //selectFeed.contains()用於檢查是否有出現在列表，有的話返回true，沒有的話就返回false
                       selectFeed.contains(index)
                           ? selectFeed.remove(index)
                           : selectFeed.add(index);
@@ -425,6 +426,24 @@ class _FrontScreenState extends State<FrontScreen> {
     });
   }
 
+  //取得加料內容的文字
+  getSelectedFeed() {
+    String selectFeedText = '';
+    selectFeed.forEach((element) {
+      if (selectFeedText != '') selectFeedText += '';
+      selectFeedText += (cData[2].feed[element]);
+      _selectFeedText = selectFeedText;
+      return _selectFeedText;
+    });
+  }
+
+  //將Dialog返回的資料做成陣列
+  getDetailList() async {
+    final result = DetailItems(cName, cTitle, cSize, cIce, cSweet, cFeed);
+    detailList.add(result);
+    return detailList;
+  }
+
   //解析tea.json資料
   Future<TeaList> loadingTeaJsonData() async {
     // 設字串變數listJson等於本地json內容
@@ -453,24 +472,5 @@ class _FrontScreenState extends State<FrontScreen> {
     return customerData;
   }
 
-  //將Dialog返回的資料做成陣列
-  getDetailList() async {
-    final result = DetailItems(cName, cTitle, cSize, cIce, cSweet, cFeed);
-    detailList.add(result);
-    return detailList;
-  }
-
-  //取得加料內容的文字
-  getSelectedFeed() {
-    String selectFeedText = '';
-    selectFeed.forEach((element) {
-      if (selectFeedText != '') selectFeedText += '';
-      selectFeedText += (cData[2].feed[element]);
-      _selectFeedText = selectFeedText;
-      return _selectFeedText;
-    });
-  }
-
-  selectFeeds() {}
 }
-//需要重新檢視選中狀態，因為如果都不點選任何內容按下點購會因為null而報錯
+
