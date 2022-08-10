@@ -18,16 +18,15 @@ class _FrontScreenState extends State<FrontScreen> {
   List<TeaData> data = [];
   List<CustomerData> cData = [];
   List<DetailItems> detailList = [];
-
   //建立Feed索引列表
   List<int> selectFeed = [];
-
   //建立選中Feed名稱
   String _selectFeedText;
-
   //文本控制器
   final textController = TextEditingController();
+  //選中項目
   int tap_index;
+  //需要回傳的變數
   String cName;
   String cTitle;
   String cSize;
@@ -374,7 +373,7 @@ class _FrontScreenState extends State<FrontScreen> {
   //選擇加料的程式
   Widget buildFeed() {
     selectFeed = [];
-    int tap_index;
+    // int tap_index;
     return StatefulBuilder(builder: (context, setState) {
       return ExpansionTile(
         title: Text('加料(最多可選2項)', style: TextStyle(fontSize: 16)),
@@ -390,12 +389,13 @@ class _FrontScreenState extends State<FrontScreen> {
               itemCount: cData[2].feed.length,
               itemBuilder: (_, index) {
                 final feed = cData[2];
-                final feedList = feed.feed[index];
-                bool tapped = index == tap_index;
+                final feedList = feed.feed[index].title;
+                final priceList = feed.feed[index].price;
+                // bool tapped = index == tap_index;
                 return GestureDetector(
                   onTap: () {
                     setState(() {
-                      //selectFeed.contains()用於檢查是否有出現在列表，有的話返回true，沒有的話就返回false
+                      //selectFeed.contains()用於檢查是否有出現在列表(bool值)，有的話將其移除，沒有的話就加入列表
                       selectFeed.contains(index)
                           ? selectFeed.remove(index)
                           : selectFeed.add(index);
@@ -415,7 +415,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         color: selectFeed.contains(index)
                             ? Colors.orange[300]
                             : Colors.grey[300]),
-                    child: Text(feedList,
+                    child: Text('$feedList \n+$priceList元',
                         style: TextStyle(fontSize: 12),
                         textAlign: TextAlign.center),
                   ),
@@ -431,7 +431,7 @@ class _FrontScreenState extends State<FrontScreen> {
     String selectFeedText = '';
     selectFeed.forEach((element) {
       if (selectFeedText != '') selectFeedText += '';
-      selectFeedText += (cData[2].feed[element]);
+      selectFeedText += (cData[2].feed[element].title);
       _selectFeedText = selectFeedText;
       return _selectFeedText;
     });
