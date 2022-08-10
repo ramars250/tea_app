@@ -18,14 +18,19 @@ class _FrontScreenState extends State<FrontScreen> {
   List<TeaData> data = [];
   List<CustomerData> cData = [];
   List<DetailItems> detailList = [];
+
   //建立Feed索引列表
   List<int> selectFeed = [];
+
   //建立選中Feed名稱
   String _selectFeedText;
+
   //文本控制器
   final textController = TextEditingController();
+
   //選中項目
   int tap_index;
+
   //需要回傳的變數
   String cName;
   String cTitle;
@@ -175,12 +180,12 @@ class _FrontScreenState extends State<FrontScreen> {
                   textAlignVertical: TextAlignVertical.center,
                   autofocus: false,
                   decoration: InputDecoration(
-                    //isCollapsed設為true，用來關閉預設輸入框
+                      //isCollapsed設為true，用來關閉預設輸入框
                       isCollapsed: true,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                           borderSide:
-                          BorderSide(color: Colors.black, width: 2.0)),
+                              BorderSide(color: Colors.black, width: 2.0)),
                       hintText: '非商品備註，僅提供填寫訂購人資訊'),
                 ),
               ),
@@ -399,13 +404,16 @@ class _FrontScreenState extends State<FrontScreen> {
                       selectFeed.contains(index)
                           ? selectFeed.remove(index)
                           : selectFeed.add(index);
-                      // print(selectFeed);
                       selectFeed.length > 2
-                          ? selectFeed.length = 0 : selectFeed.length;
+                          ? selectFeed.clear()
+                          : selectFeed.length;
                       // tap_index = index;
                       getSelectedFeed();
-                      cFeed = _selectFeedText;
-                      // print(_selectFeedText);
+                      // print(selectFeed.length);
+                      selectFeed.length != 0
+                          ? cFeed = _selectFeedText
+                          : cFeed = null;
+                      // print(cFeed);
                     });
                   },
                   child: Container(
@@ -430,9 +438,10 @@ class _FrontScreenState extends State<FrontScreen> {
   getSelectedFeed() {
     String selectFeedText = '';
     selectFeed.forEach((element) {
-      if (selectFeedText != '') selectFeedText += '';
+      if (selectFeedText != '') selectFeedText += ',';
       selectFeedText += (cData[2].feed[element].title);
       _selectFeedText = selectFeedText;
+      print(_selectFeedText);
       return _selectFeedText;
     });
   }
@@ -471,6 +480,4 @@ class _FrontScreenState extends State<FrontScreen> {
     });
     return customerData;
   }
-
 }
-
