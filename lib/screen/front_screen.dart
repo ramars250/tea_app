@@ -409,7 +409,6 @@ class _FrontScreenState extends State<FrontScreen> {
                           : selectFeed.length;
                       // tap_index = index;
                       getSelectedFeed();
-                      // print(selectFeed.length);
                       selectFeed.length != 0
                           ? cFeed = _selectFeedText
                           : cFeed = null;
